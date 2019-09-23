@@ -1,0 +1,117 @@
+.container{
+    margin: 10px;
+    padding: 0;
+    display: flex;
+}
+
+#search{
+    margin-left: 60px;
+    height: 25px;
+}
+
+#search:hover{
+    background-color: beige;
+}
+
+#search:focus{
+    background-color: rgb(241, 239, 236);
+}
+
+.list{
+    margin-left: 25px;
+    height: 85vh;
+    overflow-y: scroll;
+}
+
+li{
+    cursor: pointer;
+    list-style-type: none;
+    font-size: 20px;
+    width: 180px;
+}
+
+li:hover{
+    color: gray;
+}
+
+li:active{
+    color: rgb(29, 18, 184);
+}
+
+.vizible{
+    width: 100%;
+}
+
+.title{
+    text-align: center;
+    font-size: 50px;
+    letter-spacing:5px;
+}
+
+.select-dog{
+    display: flex;
+    justify-content: center;
+}
+
+.sub-breed{
+    width: 300px;
+    height: 25px;
+    display: none;
+    
+}
+
+.sub-breed:hover{
+    background-color: rgb(241, 240, 240);
+}
+
+.sub-breed:focus{
+    background-color: rgb(241, 240, 240);
+}
+
+.slider{
+    width: 640px;
+    height: 480px;
+    overflow: hidden;
+    position: relative;
+    margin: 50px auto;
+    display: none;
+}
+
+.img-slider{
+    width: 640px;
+    height: 480px;
+    object-fit: cover;
+}
+
+.slider--line{
+    display: flex;
+    position: relative;
+    transition: all ease 1s;
+    right: 0;
+}
+
+.left--arrow{
+    position: absolute;
+    width: 100px;
+    line-height: 100px;
+    left: 0;
+    top: 140px;
+    text-align: center;
+    font-size: 50px;
+    color: red;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.right--arrow{
+    position: absolute;
+    width: 100px;
+    line-height: 100px;
+    right: 0;
+    top: 140px;
+    text-align: center;
+    font-size: 50px;
+    color: red;
+    font-weight: 700;
+    cursor: pointer;
+}

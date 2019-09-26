@@ -41,7 +41,10 @@ function createList(dogs, className, addingClassName, creatingElement) {
 
     const parent = document.getElementsByClassName(className)[0];
     if (creatingElement == 'option') {
-        parent.appendChild(element).textContent = 'подпорода';
+        element.setAttribute('disabled', '');
+        element.setAttribute('selected', '');
+        element.textContent = 'подпорода';
+        parent.appendChild(element);
     };
     parent.appendChild(fragment);
 };
@@ -49,17 +52,6 @@ function createList(dogs, className, addingClassName, creatingElement) {
 function clearOption(element) {
     let clear = document.getElementsByClassName(element);
     while (clear.length) clear[0].remove();
-};
-
-makeRequest('https://dog.ceo/api/breeds/list/all')
-    .then(res => createList(Object.keys(res.message), 'list', "breed", 'li'));
-
-function listOnClick(element, breed) {
-    element.onclick = () => {
-        makeRequest(`https://dog.ceo/api/breed/${breed}/list`)
-            .then(res => createSelect(res.message, breed))
-            .then(() => createTitle(breed, '.title'))
-    };
 };
 
 function createTitle(name, element) {
@@ -89,33 +81,11 @@ function eventAction(event, idName, handler) {
     search.addEventListener(event, handler);
 };
 
-eventAction('input', '#search', searchInput);
-
-function createSelect(element, breed) {
-    const select = document.getElementsByClassName('sub-breed')[0];
-    const slider = document.getElementsByClassName('slider')[0];
-
-    if (element.length > 0) {
-        clearOption('dog-option');
-        slider.style.display = 'none';
-        select.style.display = 'block';
-        createList(element, 'sub-breed', 'dog-option', 'option')
-
-    } else {
-
-        select.style.display = 'none';
-        setImgList(breed);
-        slider.style.display = 'block';
-
-    };
-};
-
 function createImgList(res) {
     if (res.length > 7) {
         return res.slice(0, 7)
-    } else {
-        return res;
-    };
+    }
+    return res;
 };
 
 function setImgList(breed) {
@@ -154,29 +124,48 @@ function setSlider(res) {
 
     const leftArrow = document.querySelector('.left--arrow');
     const rightArrow = document.querySelector('.right--arrow');
-    var position = 0;
+    let position = 0;
     line.style.right = 0;
 
     rightArrow.onclick = function () {
-        position = position + 640;
+        position += 640;
         if (position > ((list.length - 1) * 640)) {
             position = 0
         }
-        line.style.right = position + 'px';
+        line.style.right = `${position}px`;
     };
 
     leftArrow.onclick = function () {
-        position = position - 640;
+        position -= 640;
         if (position < 0) {
             position = ((list.length - 1) * 640)
         };
-        line.style.right = position + 'px';
+        line.style.right = `${position}px`;
     };
 };
 
 function getTitleName(element) {
     let name = document.querySelector(element);
     return name.textContent;
+};
+
+function createSelect(element, breed) {
+    const select = document.getElementsByClassName('sub-breed')[0];
+    const slider = document.getElementsByClassName('slider')[0];
+
+    if (element.length > 0) {
+        clearOption('dog-option');
+        slider.style.display = 'none';
+        createList(element, 'sub-breed', 'dog-option', 'option')
+        select.style.display = 'block';
+
+    } else {
+
+        select.style.display = 'none';
+        setImgList(breed);
+        slider.style.display = 'block';
+
+    };
 };
 
 function getOptionBreed() {
@@ -194,5 +183,19 @@ function getOptionBreed() {
             .then(res => setSlider(res))
     }
 };
+
+makeRequest('https://dog.ceo/api/breeds/list/all')
+    .then(res => createList(Object.keys(res.message), 'list', "breed", 'li'));
+
+function listOnClick(element, breed) {
+    clearOption('img-slider');
+    element.onclick = () => {
+        makeRequest(`https://dog.ceo/api/breed/${breed}/list`)
+            .then(res => createSelect(res.message, breed))
+            .then(() => createTitle(breed, '.title'))
+    };
+};
+
+eventAction('input', '#search', searchInput);
 
 eventAction('change', '.sub-breed', getOptionBreed);
